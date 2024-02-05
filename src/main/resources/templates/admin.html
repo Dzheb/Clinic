@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+  <title>Readers page</title>
+  <style>
+    .main_frame{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    body {
+      background: deepskyblue;
+    }
+    .data_frame{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: left;
+      background-color: aqua;
+      box-shadow: blue;
+      border: black 2px;
+      border-radius: 8px;
+      margin: 16px;
+      padding: 8px;
+
+    }
+    ul {
+      list-style-type: none; /* Убирает буллиты */
+    }
+  </style>
+</head>
+<body>
+<div class="main_frame">
+<div class="doctors data_frame">
+<!--  -->
+<h1>Врачи клиники</h1><br>
+  <table class="doctor_table">
+    <thead>
+    <tr>
+      <th>Ф.И.О.</th>
+      <th>Специализация</th>
+      <th>Категория</th>
+      <th>Дата рождения</th>
+      <th>Редактировать</th>
+      <th>Удалить</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="doctor : ${doctors}">
+      <td th:text="${doctor.fio}"></td>
+      <td th:text="${doctor.speciality}"></td>
+      <td th:text="${doctor.category}"></td>
+      <td th:text="${doctor.birth}"></td>
+      <td><a th:href="@{/edit/{id}(id=${doctor.id})}"><img class="icon edit" src="/icons/SVG/pencil.svg"/>
+      </a></td>
+      <!-- <td th:id = "${doctor.id}"> <a><img class="icon" src="/icons/SVG/pencil.svg"/></a>
+     </td> -->
+
+
+      <td><a th:href="@{/delete/{id}(id=${doctor.id})}"><img class="icon" src="/icons/SVG/delete.svg"/>
+      </a></td>
+    </tr>
+    </tbody>
+  </table>
+<!--<ul>-->
+<!--  <li th:each="doctor : ${doctors}" th:text="${doctor.toString()}"></li>-->
+<!--</ul>-->
+<!--  -->
+</div>
+<div class="patients data_frame">
+<h1>Пациенты клиники</h1><br>
+<ul>
+  <li th:each="patient : ${patients}" th:text="${patient.toString()}"></li>
+</ul>
+</div>
+<div class="appointments data_frame">
+<h1>Приёмы пациентов</h1><br>
+<ul>
+  <li th:each="appointment : ${appointments}" th:text="${appointment.toString()}"></li>
+</ul>
+</div>
+  <div>
+    <button class="btn_test">Press</button>
+  </div>
+</div>
+<script>
+  const btnTest = document.querySelector('.btn_test')
+  btnTest.onclick = function() {
+    event.preventDefault()
+
+    alert("${patients}");
+
+  }
+
+</script>
+</body>
+</html>
