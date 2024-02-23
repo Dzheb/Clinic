@@ -1,0 +1,81 @@
+body {
+    background: deepskyblue;
+}
+.admin_main_frame {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.data_frame{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: left;
+    background-color: aqua;
+    box-shadow: blue;
+    border: black 2px;
+    border-radius: 8px;
+    margin: 16px;
+    padding: 8px;
+
+}
+.icon{
+    text-align: center;
+}
+/*ul {*/
+/*    list-style-type: none; !* Убирает буллиты *!*/
+/*}*/
+.admin_header {
+    text-align: center;
+    margin: 30px 0;
+}
+td {
+    margin: 4px;
+    text-align: center;
+}
+/* стили для modal
+*/
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    box-shadow: blue;
+    border-radius: 8px;
+}
+.add_form_items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

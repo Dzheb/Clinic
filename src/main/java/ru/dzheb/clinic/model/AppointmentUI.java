@@ -9,21 +9,21 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AppointmentUI {
     long id;
-    String DoctorName;
-    String PatientName;
+    String doctorName;
+    String patientName;
     LocalDateTime appointment_start;
     LocalDateTime appointment_end;
 
-//    public AppointmentUI(long id, String bookName,
-//                   String readerName,
-//                   LocalDateTime issued_at,
-//                   LocalDateTime returned_at) {
-//        this.id = id;
-//        this.bookName = bookName;
-//        this.readerName = readerName;
-//        this.issued_at = issued_at;
-//        this.returned_at = returned_at;
-//    }
+    public AppointmentUI(long id, String doctorName,
+                   String patientName,
+                   LocalDateTime appointment_start,
+                   LocalDateTime appointment_end) {
+        this.id = id;
+        this.doctorName = doctorName;
+        this.patientName = patientName;
+        this.appointment_start = appointment_start;
+        this.appointment_end = appointment_end;
+    }
     @Override
     public String toString() {
         return "# "+this.id + ", Врач: " + '"'+this.getDoctorName()+'"' ;

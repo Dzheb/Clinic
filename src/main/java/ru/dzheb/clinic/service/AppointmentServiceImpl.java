@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import ru.dzheb.clinic.DoctorProperties;
 import ru.dzheb.clinic.api.AppointmentRequest;
 import ru.dzheb.clinic.model.Appointment;
+import ru.dzheb.clinic.model.AppointmentUI;
 import ru.dzheb.clinic.repository.AppointmentRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -25,10 +27,27 @@ public class AppointmentServiceImpl implements AppointmentService {
 private final DoctorProperties doctorProperties;
 //    @Value("${application.min-appointment-interval:3600}")
 //    private int minAppointmentInterval;
+    public List<AppointmentUI> allAppointmentsUI() {
+           List<AppointmentUI> appointmentUIS = new ArrayList<>();
+            List<Appointment> appointments = appointmentRepository.findAll();
+            for (Appointment appointment : appointments) {
+                AppointmentUI appointmentUI = new AppointmentUI(appointment.getId(),
+                        doctorService.getDoctorById(appointment.getDoctorId())
+                                .getFio(),
+                        patientService.getPatientById(appointment
+                                .getPatientId()).getFamily(),
+                        appointment.getAppointment_start(),
+                        appointment.getAppointment_end());
+                appointmentUIS.add(appointmentUI);
+            }
+            return appointmentUIS;
+        }
     public List<Appointment> allAppointments() {
 
         return appointmentRepository.findAll();
     }
+
+
 
     public Appointment getAppointmentById(long id) {
 

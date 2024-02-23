@@ -3,14 +3,11 @@ package ru.dzheb.clinic.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "Doctors")
+@Table(name = "doctors")
 @Data
 public class Doctor {
     @Id
@@ -22,14 +19,14 @@ public class Doctor {
     @Schema(name = "Ф.И.О. врача",minimum ="3",maximum = "100")
     private  String fio;
     @Column()
-    private String speciality;
+    private long speciality;
     @Column()
-    private String category;
+    private long category;
     @Column()
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date birth;
-    @Column()
-    private String image;
+//    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDate birth;
+//    @Column()
+//    private String image;
 
     @Override
     public String toString() {

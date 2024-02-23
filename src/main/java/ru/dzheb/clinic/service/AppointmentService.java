@@ -2,11 +2,13 @@ package ru.dzheb.clinic.service;
 
 import ru.dzheb.clinic.api.AppointmentRequest;
 import ru.dzheb.clinic.model.Appointment;
+import ru.dzheb.clinic.model.AppointmentUI;
 
 import java.util.List;
 
 public interface AppointmentService {
     List<Appointment> allAppointments();
+    List<AppointmentUI> allAppointmentsUI();
 
 
     Appointment getAppointmentById(long id);

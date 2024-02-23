@@ -17,14 +17,16 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
+//@CrossOrigin(origins = "http://localhost:9000")
 @RequestMapping("/doctor")
 @Tag(name = "Doctor")
 public class DoctorController {
     // dependency injection
     private final DoctorService doctorservice;
+
     @GetMapping()
     @Operation(summary = "get all doctors"
-            ,description = "Поиск всех врачей")
+            , description = "Поиск всех врачей")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Ошибка клиента")
@@ -32,9 +34,10 @@ public class DoctorController {
     public List<Doctor> allDoctors() {
         return doctorservice.allDoctors();
     }
+
     @GetMapping("/{id}")
     @Operation(summary = "get a doctor by id"
-            ,description = "Поиск врача по идентификатору")
+            , description = "Поиск врача по идентификатору")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Ошибка клиента")
@@ -45,7 +48,7 @@ public class DoctorController {
         if (doctor == null) {
             System.out.println("Врач не найден");
             throw new NoSuchElementException("Врач не найден");
-      //      return ResponseEntity.notFound().build();
+            //      return ResponseEntity.notFound().build();
         } else {
             System.out.println("Врач: " + doctorservice.getDoctorById(id));
             return ResponseEntity.status(HttpStatus.OK).body(doctor);
@@ -55,14 +58,20 @@ public class DoctorController {
 
     @PostMapping
     @Operation(summary = "add a doctor to the clinic"
-            ,description = "Добавление врача в клинику")
+            , description = "Добавление врача в клинику")
     public Long addDoctor(@RequestBody Doctor doctor) {
         return doctorservice.addDoctor(doctor);
 
     }
+
+    @PutMapping("/{id}")
+    public Doctor updateDoctor(@PathVariable Long id, @RequestBody Doctor doctor) {
+        return doctorservice.updateDoctor(id, doctor);
+    }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "delete doctor by id"
-            ,description = "Удаление врача по идентификатору")
+            , description = "Удаление врача по идентификатору")
     public String deleteDoctor(@PathVariable long id) {
         return doctorservice.deleteDoctor(id);
     }
