@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class SpecialityServiceImpl implements SpecialityService {
 
-private final SpecialityRepository specialityRepository;
+    private final SpecialityRepository specialityRepository;
 
     public SpecialityServiceImpl(SpecialityRepository specialityRepository) {
         this.specialityRepository = specialityRepository;
@@ -20,15 +20,25 @@ private final SpecialityRepository specialityRepository;
     @Override
     public String getSpecialityById(long id) {
         Speciality spec = specialityRepository.findById(id).orElse(null);
-        if(spec != null)
-        {
+        if (spec != null) {
             return spec.getSpeciality();
-        }
-        else  return "";
+        } else return "";
+    }
+
+//    @Override
+//    public List<Speciality> allSpeciality() {
+//        return specialityRepository.findAll();
+//    }
+    @Override
+    public List<String> allSpecialityUI() {
+        return specialityRepository.findAll().stream().map(Speciality::getSpeciality).toList();
     }
 
     @Override
-    public List<Speciality> allSpeciality() {
-        return specialityRepository.findAll();
+    public Speciality getSpecialityBySpeciality(String speciality) {
+        return specialityRepository.findAll().stream()
+                .filter(it -> it.getSpeciality()
+                        .equals(speciality)).findFirst().orElse(null);
     }
 }
+

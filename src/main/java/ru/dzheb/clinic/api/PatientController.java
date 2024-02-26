@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.dzheb.clinic.model.DoctorUI;
 import ru.dzheb.clinic.model.Patient;
+import ru.dzheb.clinic.model.PatientUI;
 import ru.dzheb.clinic.service.PatientService;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/patient")
 @Tag(name = "Patient")
 public class PatientController {
@@ -24,8 +27,8 @@ public class PatientController {
     @GetMapping()
     @Operation(summary = "get all patients"
             ,description = "Поиск всех пациентов")
-       public List<Patient> allPatients() {
-        return patientservice.allPatients();
+       public List<PatientUI> allPatients() {
+        return patientservice.allPatientsUI();
     }
     @GetMapping("/{id}")
     @Operation(summary = "get patient by id"
@@ -47,13 +50,15 @@ public class PatientController {
 
         }
     }
-
     @PostMapping
     @Operation(summary = "add patient to the clinic"
             ,description = "Добавление пациента в клинику")
-    public Long addPatient(@RequestBody Patient patient) {
+    public Long addPatient(@RequestBody PatientUI patient) {
         return patientservice.addPatient(patient);
-
+    }
+    @PutMapping("/{id}")
+    public long updatePatient(@PathVariable Long id, @RequestBody PatientUI patient) {
+        return patientservice.updatePatient(id, patient);
     }
     @DeleteMapping("/{id}")
     @Operation(summary = "delete patient by id"

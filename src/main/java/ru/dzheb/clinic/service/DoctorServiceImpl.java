@@ -6,7 +6,6 @@ import ru.dzheb.clinic.repository.DoctorRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -27,23 +26,38 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Long addDoctor(Doctor doctor) {
-        repository.saveAndFlush(doctor);
-        return doctor.getId();
+    public Long addDoctor(DoctorUI doctor) {
+        Doctor newDoctor = new Doctor();
+        newDoctor.setFio(doctor.getFio());
+        newDoctor.setCategory(categoryService
+                .getCategoryByCategory(doctor.getCategory())
+                .getId());
+        newDoctor.setSpeciality(specialityService
+                .getSpecialityBySpeciality(doctor.getSpeciality())
+                .getId());
+        newDoctor.setBirth(doctor.getBirth());
+
+        return repository.saveAndFlush(newDoctor).getId();
+
     }
 
     @Override
-    public Doctor updateDoctor(long id, Doctor doctor) {
+    public long updateDoctor(long id, DoctorUI doctorUI) {
         Doctor doctorToUpdate = getDoctorById(id);
-        if(doctorToUpdate != null) {
-            doctorToUpdate.setFio(doctor.getFio());
-            doctorToUpdate.setCategory(doctor.getCategory());
-            doctorToUpdate.setSpeciality(doctor.getSpeciality());
-            doctorToUpdate.setBirth(doctor.getBirth());
-            repository.save(doctorToUpdate);
-            return doctorToUpdate;
-        }
-        else return null;
+        if (doctorToUpdate != null) {
+            doctorToUpdate.setFio(doctorUI.getFio());
+            doctorToUpdate.setCategory(categoryService
+                    .getCategoryByCategory(doctorUI.getCategory())
+                    .getId());
+            doctorToUpdate.setSpeciality(specialityService
+                    .getSpecialityBySpeciality(doctorUI.getSpeciality())
+                    .getId());
+            doctorToUpdate.setBirth(doctorUI.getBirth());
+            System.out.println(doctorToUpdate.getBirth() + "  "
+                    + doctorUI.getBirth());
+            repository.saveAndFlush(doctorToUpdate);
+            return doctorToUpdate.getId();
+        } else return -1;
     }
 
     @Override
@@ -70,10 +84,10 @@ public class DoctorServiceImpl implements DoctorService {
         for (Doctor doctor : doctors) {
             DoctorUI doctorUI = new DoctorUI(
                     doctor.getId(),
-            doctor.getFio(),
-            specialityService.getSpecialityById(doctor.getSpeciality()),
-            categoryService.getCategoryById(doctor.getCategory()),
-            doctor.getBirth());
+                    doctor.getFio(),
+                    specialityService.getSpecialityById(doctor.getSpeciality()),
+                    categoryService.getCategoryById(doctor.getCategory()),
+                    doctor.getBirth());
             doctorUIS.add(doctorUI);
 
         }

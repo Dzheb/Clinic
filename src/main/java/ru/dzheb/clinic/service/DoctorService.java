@@ -8,12 +8,11 @@ import java.util.List;
 public interface DoctorService {
     Doctor getDoctorById(long id);
 
-    Long addDoctor(Doctor doctor);
-
     String deleteDoctor(long id);
 
     List<Doctor> allDoctors();
-    List<DoctorUI> allDoctorsUI();
+    Long addDoctor(DoctorUI doctor);
 
-    Doctor updateDoctor(long id,Doctor doctor);
+    long updateDoctor(long id, DoctorUI doctor);
+    List<DoctorUI> allDoctorsUI();
 }

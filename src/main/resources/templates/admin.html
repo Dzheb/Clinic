@@ -79,8 +79,8 @@
                 <th>Удалить</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="doctor : ${doctors}">
+            <tbody class="tbody_doctors">
+            <tr class="trow_doctors"th:each="doctor : ${doctors}">
                 <td th:text="${doctor.fio}"></td>
                 <td th:text="${doctor.speciality}"></td>
                 <td th:text="${doctor.category}"></td>
@@ -226,6 +226,17 @@
     }
     // open the modal
     submit_btn.onclick = function () {
+        const tbodyRef = document.getElementById("doctor_table").getElementsByTagName('tbody')[0];
+
+// Insert a row at the end of table
+        const newRow = tbodyRef.insertRow();
+
+// Insert a cell at the end of the row
+        const newCell = newRow.insertCell();
+
+// Append a text node to the cell
+        const newText = document.createTextNode("new row");
+        newCell.appendChild(newText);
         alert("Отправлено");
     }
 
