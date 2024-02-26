@@ -8,5 +8,9 @@ import java.util.List;
 public interface CategoryService {
     String getCategoryById(long id);
 
-    List<Category> allCategory();
+    List<Category> allCategories();
+
+    Category getCategoryByCategory(String category);
+
+    List<String> allCategoriesUI();
 }

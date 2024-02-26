@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.dzheb.clinic.model.Doctor;
+import ru.dzheb.clinic.model.DoctorUI;
 import ru.dzheb.clinic.service.DoctorService;
 
 import java.util.List;
@@ -17,11 +18,10 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
-//@CrossOrigin(origins = "http://localhost:9000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/doctor")
 @Tag(name = "Doctor")
 public class DoctorController {
-    // dependency injection
     private final DoctorService doctorservice;
 
     @GetMapping()
@@ -31,8 +31,8 @@ public class DoctorController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Ошибка клиента")
     })
-    public List<Doctor> allDoctors() {
-        return doctorservice.allDoctors();
+    public List<DoctorUI> allDoctors() {
+        return doctorservice.allDoctorsUI();
     }
 
     @GetMapping("/{id}")
@@ -59,13 +59,13 @@ public class DoctorController {
     @PostMapping
     @Operation(summary = "add a doctor to the clinic"
             , description = "Добавление врача в клинику")
-    public Long addDoctor(@RequestBody Doctor doctor) {
+    public Long addDoctor(@RequestBody DoctorUI doctor) {
         return doctorservice.addDoctor(doctor);
 
     }
 
     @PutMapping("/{id}")
-    public Doctor updateDoctor(@PathVariable Long id, @RequestBody Doctor doctor) {
+    public long updateDoctor(@PathVariable Long id, @RequestBody DoctorUI doctor) {
         return doctorservice.updateDoctor(id, doctor);
     }
 
