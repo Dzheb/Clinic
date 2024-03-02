@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.dzheb.clinic.model.Category;
+import ru.dzheb.clinic.model.CategoryUI;
 import ru.dzheb.clinic.model.Patient;
 import ru.dzheb.clinic.service.CategoryService;
 
@@ -29,7 +30,7 @@ public class CategoryController {
 //       public List<Category> allCategories() {
 //        return categoryService.allCategories();
     //}
-    public List<String> allCategoriesUI() {
+    public List<CategoryUI> allCategoriesUI() {
         return categoryService.allCategoriesUI();
     }
     @GetMapping("/{id}")

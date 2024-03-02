@@ -15,4 +15,6 @@ public interface DoctorService {
 
     long updateDoctor(long id, DoctorUI doctor);
     List<DoctorUI> allDoctorsUI();
+
+    Doctor getDoctorByFio(String doctorName);
 }

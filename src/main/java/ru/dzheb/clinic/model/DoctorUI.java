@@ -15,14 +15,18 @@ DoctorUI {
    private long id;
    private  String fio;
    private String speciality;
+   long specialityId;
    private String category;
+   long categoryId;
    private LocalDate birth;
 
-   public DoctorUI(long id, String fio, String speciality, String category, LocalDate birth) {
+   public DoctorUI(long id, String fio, String speciality, long specialityId, String category, long categoryId, LocalDate birth) {
       this.id = id;
       this.fio = fio;
       this.speciality = speciality;
+      this.specialityId = specialityId;
       this.category = category;
+      this.categoryId = categoryId;
       this.birth = birth;
    }
 }

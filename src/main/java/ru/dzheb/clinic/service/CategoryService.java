@@ -1,6 +1,7 @@
 package ru.dzheb.clinic.service;
 
 import ru.dzheb.clinic.model.Category;
+import ru.dzheb.clinic.model.CategoryUI;
 import ru.dzheb.clinic.model.Patient;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface CategoryService {
 
     Category getCategoryByCategory(String category);
 
-    List<String> allCategoriesUI();
+    List<CategoryUI> allCategoriesUI();
 }

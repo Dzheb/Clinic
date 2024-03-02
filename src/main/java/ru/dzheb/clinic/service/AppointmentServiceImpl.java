@@ -9,6 +9,8 @@ import ru.dzheb.clinic.DoctorProperties;
 import ru.dzheb.clinic.api.AppointmentRequest;
 import ru.dzheb.clinic.model.Appointment;
 import ru.dzheb.clinic.model.AppointmentUI;
+import ru.dzheb.clinic.model.Doctor;
+import ru.dzheb.clinic.model.DoctorUI;
 import ru.dzheb.clinic.repository.AppointmentRepository;
 
 import java.time.LocalDateTime;
@@ -23,30 +25,38 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final DoctorService doctorService;
     private final PatientService patientService;
     private final AppointmentRepository appointmentRepository;
-//    private final ConfigurableApplicationContext context;
-private final DoctorProperties doctorProperties;
+    //    private final ConfigurableApplicationContext context;
+    private final DoctorProperties doctorProperties;
+
+    //int appointmentInterval = doctorProperties.getMinAppointmentInterval();
 //    @Value("${application.min-appointment-interval:3600}")
 //    private int minAppointmentInterval;
     public List<AppointmentUI> allAppointmentsUI() {
-           List<AppointmentUI> appointmentUIS = new ArrayList<>();
-            List<Appointment> appointments = appointmentRepository.findAll();
-            for (Appointment appointment : appointments) {
-                AppointmentUI appointmentUI = new AppointmentUI(appointment.getId(),
-                        doctorService.getDoctorById(appointment.getDoctorId())
-                                .getFio(),
-                        patientService.getPatientById(appointment
-                                .getPatientId()).getFamily(),
-                        appointment.getAppointment_start(),
-                        appointment.getAppointment_end());
-                appointmentUIS.add(appointmentUI);
-            }
-            return appointmentUIS;
+        List<AppointmentUI> appointmentUIS = new ArrayList<>();
+        List<Appointment> appointments = appointmentRepository.findAll();
+        for (Appointment appointment : appointments) {
+            AppointmentUI appointmentUI = new AppointmentUI(appointment.getId(),
+                    doctorService.getDoctorById(appointment.getDoctorId())
+                            .getFio(),
+                    doctorService.getDoctorById(appointment.getDoctorId()).getId(),
+                    patientService.getPatientById(appointment
+                            .getPatientId()).getFamily() + " " +
+                            patientService.getPatientById(appointment
+                                    .getPatientId()).getName() + " " +
+                            patientService.getPatientById(appointment
+                                    .getPatientId()).getMiddle_name(),
+                    patientService.getPatientById(appointment.getPatientId()).getId(),
+                    appointment.getAppointment_start().toLocalDate(),
+                    appointment.getAppointment_start().toLocalTime());
+            appointmentUIS.add(appointmentUI);
         }
+        return appointmentUIS;
+    }
+
     public List<Appointment> allAppointments() {
 
         return appointmentRepository.findAll();
     }
-
 
 
     public Appointment getAppointmentById(long id) {
@@ -61,25 +71,53 @@ private final DoctorProperties doctorProperties;
         if (patientService.getPatientById(request.getPatientId()) == null) {
             throw new NoSuchElementException("Не найден пациент с идентификатором \"" + request.getPatientId() + "\"");
         }
-//        DoctorProperties doctorProperties = context.getBean(DoctorProperties.class);
         int appointmentInterval = doctorProperties.getMinAppointmentInterval();
-        if(appointmentRepository.findAll().stream()
+        if (appointmentRepository.findAll().stream()
                 .filter(it -> it.getDoctorId() == request.getDoctorId() &&
                         (request.getAppointmentTime().isAfter(it.getAppointment_start()
-                                ) && request.getAppointmentTime()
+                        ) && request.getAppointmentTime()
                                 .isBefore(it.getAppointment_start()
                                         .plusMinutes(appointmentInterval))
-                        || (request.getAppointmentTime().plusMinutes(appointmentInterval)
+                                || (request.getAppointmentTime().plusMinutes(appointmentInterval)
                                 .isAfter(it.getAppointment_start())
                                 && request.getAppointmentTime().plusMinutes(appointmentInterval)
                                 .isBefore(it.getAppointment_start().plusMinutes(appointmentInterval)))))
-                .toList().size()!= 0 ){
+                .toList().size() != 0) {
             throw new NoSuchElementException("Время приёма совпадает с" +
                     " другим приёмом этого врача");
         }
         Appointment appointment = new Appointment(request.getDoctorId()
                 , request.getPatientId(), request.getAppointmentTime());
-        System.out.println(appointment.getAppointment_start());
+        appointmentRepository.save(appointment);
+        return appointment;
+    }
+
+    //
+    public Appointment addAppointmentUI(AppointmentUI appointmentUI) {
+        if (doctorService.getDoctorById(appointmentUI.getDoctorId()) == null) {
+            throw new NoSuchElementException("Не найден врач ");
+        }
+        if (patientService.getPatientById(appointmentUI.getPatientId()) == null) {
+            throw new NoSuchElementException("Не найден пациент");
+        }
+        int appointmentInterval = doctorProperties.getMinAppointmentInterval();
+        if (appointmentRepository.findAll().stream()
+                .filter(it -> it.getDoctorId() == appointmentUI.getDoctorId() &&
+                        (appointmentUI.getAppointment_time().isAfter(it.getAppointment_start().toLocalTime()
+                        ) && appointmentUI.getAppointment_time()
+                                .isBefore(it.getAppointment_start().toLocalTime()
+                                        .plusMinutes(appointmentInterval))
+                                || (appointmentUI.getAppointment_time().plusMinutes(appointmentInterval)
+                                .isAfter(it.getAppointment_start().toLocalTime())
+                                && appointmentUI.getAppointment_time().plusMinutes(appointmentInterval)
+                                .isBefore(it.getAppointment_start().toLocalTime().plusMinutes(appointmentInterval)))))
+                .toList().size() != 0) {
+            throw new NoSuchElementException("Время приёма совпадает с" +
+                    " другим приёмом этого врача");
+        }
+        Appointment appointment = new Appointment(appointmentUI.getDoctorId()
+                , appointmentUI.getPatientId(), appointmentUI.getAppointment_time()
+                .atDate(appointmentUI.getAppointment_date()));
         appointmentRepository.save(appointment);
         return appointment;
     }
@@ -92,4 +130,25 @@ private final DoctorProperties doctorProperties;
         return "Приём id № " + id + " удалён";
 
     }
+
+    @Override
+    public long updateAppointment(long id, AppointmentUI appointmentUI) {
+        Appointment appointmentToUpdate = getAppointmentById(id);
+        if (appointmentToUpdate == null) {
+            throw new NoSuchElementException("Не найден приём с идентификатором \"" + appointmentUI.getId() + "\"");
+        }
+        if (doctorService.getDoctorById(appointmentUI.getDoctorId()) == null) {
+            throw new NoSuchElementException("Не найден врач с идентификатором \"" + appointmentUI.getDoctorId() + "\"");
+        }
+        if (patientService.getPatientById(appointmentUI.getPatientId()) == null) {
+            throw new NoSuchElementException("Не найден пациент с идентификатором \"" + appointmentUI.getPatientId() + "\"");
+        }
+        appointmentToUpdate.setDoctorId(appointmentUI.getDoctorId());
+        appointmentToUpdate.setPatientId(appointmentUI.getPatientId());
+        appointmentToUpdate.setAppointment_start(appointmentUI.getAppointment_time()
+                .atDate(appointmentUI.getAppointment_date()));
+        appointmentRepository.saveAndFlush(appointmentToUpdate);
+        return appointmentToUpdate.getId();
+    }
+
 }

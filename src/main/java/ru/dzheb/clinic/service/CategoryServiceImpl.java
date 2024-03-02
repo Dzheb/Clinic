@@ -2,8 +2,12 @@ package ru.dzheb.clinic.service;
 
 import org.springframework.stereotype.Service;
 import ru.dzheb.clinic.model.Category;
+import ru.dzheb.clinic.model.CategoryUI;
+import ru.dzheb.clinic.model.Patient;
+import ru.dzheb.clinic.model.PatientUI;
 import ru.dzheb.clinic.repository.CategoryRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,18 +35,26 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategoryByCategory(String category) {
-        System.out.println(category);
         Category cat = categoryRepository.findAll().stream()
                 .filter(it -> it.getCategory()
                         .equals(category)).findFirst().orElse(null);
-        System.out.println(cat.getCategory());
         return categoryRepository.findAll().stream()
                 .filter(it -> it.getCategory()
                         .equals(category)).findFirst().orElse(null);
     }
 
     @Override
-    public List<String> allCategoriesUI() {
-        return categoryRepository.findAll().stream().map(Category::getCategory).toList();
+    public List<CategoryUI> allCategoriesUI() {
+        List<CategoryUI> categoryUIS = new ArrayList<>();
+        List<Category> categories = categoryRepository.findAll();
+        for (Category category : categories) {
+            CategoryUI categoryUI = new CategoryUI(
+                    category.getId(),
+                    category.getCategory());
+
+            categoryUIS.add(categoryUI);
+
+        }
+        return categoryUIS;
     }
 }

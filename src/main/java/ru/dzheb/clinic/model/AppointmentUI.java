@@ -3,29 +3,28 @@ package ru.dzheb.clinic.model;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @RequiredArgsConstructor
 public class AppointmentUI {
     long id;
     String doctorName;
+    long doctorId;
     String patientName;
-    LocalDateTime appointment_start;
-    LocalDateTime appointment_end;
+    long patientId;
+    LocalDate appointment_date;
+    LocalTime appointment_time;
 
-    public AppointmentUI(long id, String doctorName,
-                   String patientName,
-                   LocalDateTime appointment_start,
-                   LocalDateTime appointment_end) {
+
+    public AppointmentUI(long id, String doctorName, long doctorId,  String patientName, long patientId, LocalDate appointment_date, LocalTime appointment_time) {
         this.id = id;
         this.doctorName = doctorName;
+        this.doctorId = doctorId;
         this.patientName = patientName;
-        this.appointment_start = appointment_start;
-        this.appointment_end = appointment_end;
-    }
-    @Override
-    public String toString() {
-        return "# "+this.id + ", Врач: " + '"'+this.getDoctorName()+'"' ;
+         this.patientId = patientId;
+        this.appointment_date = appointment_date;
+        this.appointment_time = appointment_time;
     }
 }

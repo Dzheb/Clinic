@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PatientServiceImpl implements PatientService{
+public class PatientServiceImpl implements PatientService {
     private final PatientRepository repository;
+
     @Autowired
     public PatientServiceImpl(PatientRepository repository) {
         this.repository = repository;
@@ -22,6 +23,16 @@ public class PatientServiceImpl implements PatientService{
     @Override
     public Patient getPatientById(long id) {
         return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Patient getPatientByFio(String patientFamily, String patientName
+            , String patientMiddleName) {
+        return repository.findAll().stream()
+                .filter(it -> it.getFamily().equals(patientFamily)
+                        && it.getName().equals(patientName)
+                        && it.equals(patientMiddleName))
+                .findFirst().orElse(null);
     }
 
     @Override
@@ -46,6 +57,7 @@ public class PatientServiceImpl implements PatientService{
     public List<Patient> allPatients() {
         return repository.findAll();
     }
+
     @Override
     public List<PatientUI> allPatientsUI() {
         List<PatientUI> patientUIS = new ArrayList<>();
@@ -55,12 +67,17 @@ public class PatientServiceImpl implements PatientService{
                     patient.getId(),
                     patient.getFamily(),
                     patient.getName(),
+                    patient.getMiddle_name(),
+                    patient.getFamily()+" "+
+                    patient.getName()+" "+
                     patient.getMiddle_name());
+
             patientUIS.add(patientUI);
 
         }
         return patientUIS;
     }
+
     @Override
     public Long addPatient(PatientUI patient) {
         Patient newPatient = new Patient();

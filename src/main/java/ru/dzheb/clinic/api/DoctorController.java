@@ -46,7 +46,6 @@ public class DoctorController {
         final Doctor doctor;
         doctor = doctorservice.getDoctorById(id);
         if (doctor == null) {
-            System.out.println("Врач не найден");
             throw new NoSuchElementException("Врач не найден");
             //      return ResponseEntity.notFound().build();
         } else {

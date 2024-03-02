@@ -29,9 +29,9 @@ public class Appointment {
     @Column
     @Schema(name = "Время и дата приёма")
     private LocalDateTime appointment_start;
-    @Column
-    @Schema(name = "Время и дата окончания приёма")
-    private LocalDateTime appointment_end;
+//    @Column
+//    @Schema(name = "Время и дата окончания приёма")
+//    private LocalDateTime appointment_end;
     @Column
     @Schema(name = "Данные анализов")
     private String analysis;
@@ -55,7 +55,5 @@ public class Appointment {
     public String toString() {
         return this.appointment_start + ".   " + '"'+this.doctorId+'"' + '"'+this.patientId+'"';
     }
-    public void setAppointmentEnd(LocalDateTime appointment_end) {
-        this.appointment_end = appointment_end;
-    }
+
 }

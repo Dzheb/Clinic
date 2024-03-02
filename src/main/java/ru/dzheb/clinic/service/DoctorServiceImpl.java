@@ -29,14 +29,9 @@ public class DoctorServiceImpl implements DoctorService {
     public Long addDoctor(DoctorUI doctor) {
         Doctor newDoctor = new Doctor();
         newDoctor.setFio(doctor.getFio());
-        newDoctor.setCategory(categoryService
-                .getCategoryByCategory(doctor.getCategory())
-                .getId());
-        newDoctor.setSpeciality(specialityService
-                .getSpecialityBySpeciality(doctor.getSpeciality())
-                .getId());
+        newDoctor.setCategory(doctor.getCategoryId());
+        newDoctor.setSpeciality(doctor.getSpecialityId());
         newDoctor.setBirth(doctor.getBirth());
-
         return repository.saveAndFlush(newDoctor).getId();
 
     }
@@ -46,12 +41,8 @@ public class DoctorServiceImpl implements DoctorService {
         Doctor doctorToUpdate = getDoctorById(id);
         if (doctorToUpdate != null) {
             doctorToUpdate.setFio(doctorUI.getFio());
-            doctorToUpdate.setCategory(categoryService
-                    .getCategoryByCategory(doctorUI.getCategory())
-                    .getId());
-            doctorToUpdate.setSpeciality(specialityService
-                    .getSpecialityBySpeciality(doctorUI.getSpeciality())
-                    .getId());
+            doctorToUpdate.setCategory(doctorUI.getCategoryId());
+            doctorToUpdate.setSpeciality(doctorUI.getSpecialityId());
             doctorToUpdate.setBirth(doctorUI.getBirth());
             System.out.println(doctorToUpdate.getBirth() + "  "
                     + doctorUI.getBirth());
@@ -86,12 +77,22 @@ public class DoctorServiceImpl implements DoctorService {
                     doctor.getId(),
                     doctor.getFio(),
                     specialityService.getSpecialityById(doctor.getSpeciality()),
+                    doctor.getSpeciality(),
                     categoryService.getCategoryById(doctor.getCategory()),
+                    doctor.getCategory(),
                     doctor.getBirth());
             doctorUIS.add(doctorUI);
 
         }
         return doctorUIS;
+    }
+
+    @Override
+    public Doctor getDoctorByFio(String doctorName) {
+        return repository.findAll().stream()
+                .filter(it -> it.getFio().equals(doctorName))
+        .findFirst().orElse(null);
+
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.dzheb.clinic.model.Category;
 import ru.dzheb.clinic.model.Speciality;
+import ru.dzheb.clinic.model.SpecialityUI;
 import ru.dzheb.clinic.service.CategoryService;
 import ru.dzheb.clinic.service.SpecialityService;
 
@@ -29,7 +30,7 @@ public class SpecialityController {
     @GetMapping()
     @Operation(summary = "get all specialities"
             , description = "Поиск всех специализаций врачей")
-    public List<String> allSpeciality() {
+    public List<SpecialityUI> allSpeciality() {
         return specialityService.allSpecialityUI();
     }
 
