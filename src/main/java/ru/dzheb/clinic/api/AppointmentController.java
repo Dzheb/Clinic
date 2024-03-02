@@ -72,5 +72,17 @@ public class AppointmentController {
     public String deleteAppointment(@PathVariable long id) {
         return appointmentService.deleteAppointment(id);
     }
+    @DeleteMapping("doctor/{id}")
+    @Operation(summary = "delete appointment by doctor id"
+            ,description = "Удаление приёма по идентификатору врача")
+    public void deleteAppointmentByDoctorId(@PathVariable long id) {
+        appointmentService.deleteAppointmentsByDoctorId(id);
+    }
+    @DeleteMapping("patient/{id}")
+    @Operation(summary = "delete appointment by patient id"
+            ,description = "Удаление приёма по идентификатору пациента")
+    public void deleteAppointmentByPatientId(@PathVariable long id) {
+        appointmentService.deleteAppointmentsByPatientId(id);
+    }
 
 }

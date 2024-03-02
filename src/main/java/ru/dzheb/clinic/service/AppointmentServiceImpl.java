@@ -150,5 +150,27 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.saveAndFlush(appointmentToUpdate);
         return appointmentToUpdate.getId();
     }
+    @Override
+    public void deleteAppointmentsByDoctorId(long id) {
+        List<Appointment> appointments_to_delete =
+                appointmentRepository.findAll().stream()
+                        .filter(it -> it.getDoctorId() == id)
+                        .toList();
+        for (Appointment app : appointments_to_delete) {
+            if (appointmentRepository.findById(app.getId()).isPresent())
+                appointmentRepository.deleteById(app.getId());
+        }
+    }
 
+    @Override
+    public void deleteAppointmentsByPatientId(long id) {
+        List<Appointment> appointments_to_delete =
+                appointmentRepository.findAll().stream()
+                        .filter(it -> it.getPatientId() == id)
+                        .toList();
+        for (Appointment app : appointments_to_delete) {
+            if (appointmentRepository.findById(app.getId()).isPresent())
+                appointmentRepository.deleteById(app.getId());
+        }
+    }
 }
