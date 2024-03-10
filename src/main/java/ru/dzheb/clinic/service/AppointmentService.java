@@ -21,4 +21,6 @@ public interface AppointmentService {
     void deleteAppointmentsByDoctorId(long id);
 
     void deleteAppointmentsByPatientId(long id);
+
+    AppointmentUI getAppointmentUIById(long id);
 }

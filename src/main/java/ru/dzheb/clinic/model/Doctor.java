@@ -23,10 +23,7 @@ public class Doctor {
     @Column()
     private long category;
     @Column()
-//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate birth;
-//    @Column()
-//    private String image;
 
     @Override
     public String toString() {

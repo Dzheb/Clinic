@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.dzheb.clinic.model.*;
 import ru.dzheb.clinic.repository.DoctorRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +21,26 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
 
-    @Override
     public Doctor getDoctorById(long id) {
         return repository.findById(id).orElse(null);
     }
 
-    @Override
+    public DoctorUI getDoctorUIById(long id) {
+        Doctor doctor = repository.findById(id).orElse(null);
+        if (doctor != null) {
+            DoctorUI doctorUI = new DoctorUI(doctor.getId(),
+                    doctor.getFio(),
+                    specialityService.getSpecialityById(doctor.getSpeciality()),
+                    doctor.getSpeciality(),
+                    categoryService.getCategoryById(doctor.getCategory()),
+                    doctor.getCategory(),
+                    doctor.getBirth());
+            return doctorUI;
+        }
+
+        return null;
+    }
+
     public Long addDoctor(DoctorUI doctor) {
         Doctor newDoctor = new Doctor();
         newDoctor.setFio(doctor.getFio());
@@ -36,7 +51,6 @@ public class DoctorServiceImpl implements DoctorService {
 
     }
 
-    @Override
     public long updateDoctor(long id, DoctorUI doctorUI) {
         Doctor doctorToUpdate = getDoctorById(id);
         if (doctorToUpdate != null) {
@@ -51,7 +65,6 @@ public class DoctorServiceImpl implements DoctorService {
         } else return -1;
     }
 
-    @Override
     public String deleteDoctor(long id) {
         Doctor doctor = getDoctorById(id);
         if (doctor != null) {
@@ -63,12 +76,10 @@ public class DoctorServiceImpl implements DoctorService {
 
     }
 
-    @Override
     public List<Doctor> allDoctors() {
         return repository.findAll();
     }
 
-    @Override
     public List<DoctorUI> allDoctorsUI() {
         List<DoctorUI> doctorUIS = new ArrayList<>();
         List<Doctor> doctors = repository.findAll();
@@ -87,11 +98,10 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorUIS;
     }
 
-    @Override
     public Doctor getDoctorByFio(String doctorName) {
         return repository.findAll().stream()
                 .filter(it -> it.getFio().equals(doctorName))
-        .findFirst().orElse(null);
+                .findFirst().orElse(null);
 
     }
 

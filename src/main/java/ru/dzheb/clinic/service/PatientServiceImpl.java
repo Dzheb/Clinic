@@ -20,28 +20,16 @@ public class PatientServiceImpl implements PatientService {
         this.repository = repository;
     }
 
-    @Override
+
     public Patient getPatientById(long id) {
         return repository.findById(id).orElse(null);
     }
 
-    @Override
-    public Patient getPatientByFio(String patientFamily, String patientName
-            , String patientMiddleName) {
-        return repository.findAll().stream()
-                .filter(it -> it.getFamily().equals(patientFamily)
-                        && it.getName().equals(patientName)
-                        && it.equals(patientMiddleName))
-                .findFirst().orElse(null);
-    }
-
-    @Override
     public Long addPatient(Patient patient) {
         repository.save(patient);
         return patient.getId();
     }
 
-    @Override
     public String deletePatient(long id) {
         Patient patient = getPatientById(id);
         if (patient != null) {
@@ -53,12 +41,10 @@ public class PatientServiceImpl implements PatientService {
 
     }
 
-    @Override
     public List<Patient> allPatients() {
         return repository.findAll();
     }
 
-    @Override
     public List<PatientUI> allPatientsUI() {
         List<PatientUI> patientUIS = new ArrayList<>();
         List<Patient> patients = repository.findAll();
@@ -78,7 +64,6 @@ public class PatientServiceImpl implements PatientService {
         return patientUIS;
     }
 
-    @Override
     public Long addPatient(PatientUI patient) {
         Patient newPatient = new Patient();
         newPatient.setFamily(patient.getFamily());
@@ -89,7 +74,6 @@ public class PatientServiceImpl implements PatientService {
 
     }
 
-    @Override
     public long updatePatient(long id, PatientUI patientUI) {
         Patient patientToUpdate = getPatientById(id);
         if (patientToUpdate != null) {

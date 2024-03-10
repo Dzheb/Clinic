@@ -1,15 +1,11 @@
 package ru.dzheb.clinic.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class
 DoctorUI {
    private long id;
@@ -20,13 +16,4 @@ DoctorUI {
    long categoryId;
    private LocalDate birth;
 
-   public DoctorUI(long id, String fio, String speciality, long specialityId, String category, long categoryId, LocalDate birth) {
-      this.id = id;
-      this.fio = fio;
-      this.speciality = speciality;
-      this.specialityId = specialityId;
-      this.category = category;
-      this.categoryId = categoryId;
-      this.birth = birth;
-   }
 }

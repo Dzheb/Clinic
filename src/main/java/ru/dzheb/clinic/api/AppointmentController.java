@@ -16,6 +16,7 @@ import ru.dzheb.clinic.service.AppointmentService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -43,14 +44,14 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Ошибка клиента")
     })
-    public ResponseEntity<Appointment> getAppointment(@PathVariable long id) {
-        final Appointment appointment;
-        appointment = appointmentService.getAppointmentById(id);
-        if (appointment == null) {
+    public ResponseEntity<AppointmentUI> getAppointment(@PathVariable long id) {
+        final AppointmentUI appointmentUI;
+        appointmentUI = appointmentService.getAppointmentUIById(id);
+        if (appointmentUI == null) {
             throw new NoSuchElementException("Приём не найден");
         } else {
             System.out.println("Приём: " + appointmentService.getAppointmentById(id));
-            return ResponseEntity.status(HttpStatus.OK).body(appointment);
+            return ResponseEntity.status(HttpStatus.OK).body(appointmentUI);
 
         }
     }

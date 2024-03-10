@@ -20,7 +20,6 @@ public class SpecialityServiceImpl implements SpecialityService {
         this.specialityRepository = specialityRepository;
     }
 
-    @Override
     public String getSpecialityById(long id) {
         Speciality spec = specialityRepository.findById(id).orElse(null);
         if (spec != null) {
@@ -28,11 +27,6 @@ public class SpecialityServiceImpl implements SpecialityService {
         } else return "";
     }
 
-//    @Override
-//    public List<Speciality> allSpeciality() {
-//        return specialityRepository.findAll();
-//    }
-    @Override
     public List<SpecialityUI> allSpecialityUI() {
         List<SpecialityUI> specialityUIS = new ArrayList<>();
         List<Speciality> specialities = specialityRepository.findAll();
@@ -47,7 +41,6 @@ public class SpecialityServiceImpl implements SpecialityService {
         return specialityUIS;
      }
 
-    @Override
     public Speciality getSpecialityBySpeciality(String speciality) {
         return specialityRepository.findAll().stream()
                 .filter(it -> it.getSpeciality()

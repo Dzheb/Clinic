@@ -16,8 +16,5 @@ public interface PatientService {
     List<Patient> allPatients();
     List<PatientUI> allPatientsUI();
     Long addPatient(PatientUI patient);
-    Patient getPatientByFio(String patientFamily, String patientName
-            , String patientMiddleName);
-
     long updatePatient(long id, PatientUI patient);
 }

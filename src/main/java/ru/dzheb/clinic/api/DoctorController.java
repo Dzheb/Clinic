@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.dzheb.clinic.model.Doctor;
 import ru.dzheb.clinic.model.DoctorUI;
 import ru.dzheb.clinic.service.DoctorService;
 
@@ -42,15 +41,14 @@ public class DoctorController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Ошибка клиента")
     })
-    public ResponseEntity<Doctor> getDoctor(@PathVariable long id) {
-        final Doctor doctor;
-        doctor = doctorservice.getDoctorById(id);
-        if (doctor == null) {
+    public ResponseEntity<DoctorUI> getDoctor(@PathVariable long id) {
+        final DoctorUI doctorUI;
+        doctorUI = doctorservice.getDoctorUIById(id);
+        if (doctorUI == null) {
             throw new NoSuchElementException("Врач не найден");
-            //      return ResponseEntity.notFound().build();
         } else {
             System.out.println("Врач: " + doctorservice.getDoctorById(id));
-            return ResponseEntity.status(HttpStatus.OK).body(doctor);
+            return ResponseEntity.status(HttpStatus.OK).body(doctorUI);
 
         }
     }

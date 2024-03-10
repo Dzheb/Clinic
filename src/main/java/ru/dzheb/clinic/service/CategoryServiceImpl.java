@@ -20,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    @Override
+
     public String getCategoryById(long id) {
         Category cat = categoryRepository.findById(id).orElse(null);
         if (cat != null) {
@@ -28,12 +28,11 @@ public class CategoryServiceImpl implements CategoryService {
         } else return "";
     }
 
-    @Override
     public List<Category> allCategories() {
         return categoryRepository.findAll();
     }
 
-    @Override
+
     public Category getCategoryByCategory(String category) {
         Category cat = categoryRepository.findAll().stream()
                 .filter(it -> it.getCategory()
@@ -43,7 +42,6 @@ public class CategoryServiceImpl implements CategoryService {
                         .equals(category)).findFirst().orElse(null);
     }
 
-    @Override
     public List<CategoryUI> allCategoriesUI() {
         List<CategoryUI> categoryUIS = new ArrayList<>();
         List<Category> categories = categoryRepository.findAll();

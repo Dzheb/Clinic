@@ -29,9 +29,6 @@ public class Appointment {
     @Column
     @Schema(name = "Время и дата приёма")
     private LocalDateTime appointment_start;
-//    @Column
-//    @Schema(name = "Время и дата окончания приёма")
-//    private LocalDateTime appointment_end;
     @Column
     @Schema(name = "Данные анализов")
     private String analysis;

@@ -2,18 +2,13 @@ package ru.dzheb.clinic.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 import ru.dzheb.clinic.DoctorProperties;
 import ru.dzheb.clinic.api.AppointmentRequest;
 import ru.dzheb.clinic.model.Appointment;
 import ru.dzheb.clinic.model.AppointmentUI;
-import ru.dzheb.clinic.model.Doctor;
-import ru.dzheb.clinic.model.DoctorUI;
 import ru.dzheb.clinic.repository.AppointmentRepository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,30 +20,29 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final DoctorService doctorService;
     private final PatientService patientService;
     private final AppointmentRepository appointmentRepository;
-    //    private final ConfigurableApplicationContext context;
     private final DoctorProperties doctorProperties;
 
-    //int appointmentInterval = doctorProperties.getMinAppointmentInterval();
-//    @Value("${application.min-appointment-interval:3600}")
-//    private int minAppointmentInterval;
-    public List<AppointmentUI> allAppointmentsUI() {
+      public List<AppointmentUI> allAppointmentsUI() {
         List<AppointmentUI> appointmentUIS = new ArrayList<>();
         List<Appointment> appointments = appointmentRepository.findAll();
         for (Appointment appointment : appointments) {
-            AppointmentUI appointmentUI = new AppointmentUI(appointment.getId(),
-                    doctorService.getDoctorById(appointment.getDoctorId())
-                            .getFio(),
-                    doctorService.getDoctorById(appointment.getDoctorId()).getId(),
-                    patientService.getPatientById(appointment
-                            .getPatientId()).getFamily() + " " +
-                            patientService.getPatientById(appointment
-                                    .getPatientId()).getName() + " " +
-                            patientService.getPatientById(appointment
-                                    .getPatientId()).getMiddle_name(),
-                    patientService.getPatientById(appointment.getPatientId()).getId(),
-                    appointment.getAppointment_start().toLocalDate(),
-                    appointment.getAppointment_start().toLocalTime());
-            appointmentUIS.add(appointmentUI);
+            if (doctorService.getDoctorById(appointment.getDoctorId()) != null
+                    && patientService.getPatientById(appointment.getPatientId()) != null) {
+                AppointmentUI appointmentUI = new AppointmentUI(appointment.getId(),
+                        doctorService.getDoctorById(appointment.getDoctorId())
+                                .getFio(),
+                        doctorService.getDoctorById(appointment.getDoctorId()).getId(),
+                        patientService.getPatientById(appointment
+                                .getPatientId()).getFamily() + " " +
+                                patientService.getPatientById(appointment
+                                        .getPatientId()).getName() + " " +
+                                patientService.getPatientById(appointment
+                                        .getPatientId()).getMiddle_name(),
+                        patientService.getPatientById(appointment.getPatientId()).getId(),
+                        appointment.getAppointment_start().toLocalDate(),
+                        appointment.getAppointment_start().toLocalTime());
+                appointmentUIS.add(appointmentUI);
+            }
         }
         return appointmentUIS;
     }
@@ -60,8 +54,31 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
     public Appointment getAppointmentById(long id) {
-
         return appointmentRepository.findById(id).orElse(null);
+    }
+
+    public AppointmentUI getAppointmentUIById(long id) {
+        Appointment appointment = appointmentRepository.findById(id).orElse(null);
+        if (appointment != null) {
+            if (doctorService.getDoctorById(appointment.getDoctorId()) != null
+                    && patientService.getPatientById(appointment.getPatientId()) != null) {
+                AppointmentUI appointmentUI = new AppointmentUI(appointment.getId(),
+                        doctorService.getDoctorById(appointment.getDoctorId())
+                                .getFio(),
+                        doctorService.getDoctorById(appointment.getDoctorId()).getId(),
+                        patientService.getPatientById(appointment
+                                .getPatientId()).getFamily() + " " +
+                                patientService.getPatientById(appointment
+                                        .getPatientId()).getName() + " " +
+                                patientService.getPatientById(appointment
+                                        .getPatientId()).getMiddle_name(),
+                        patientService.getPatientById(appointment.getPatientId()).getId(),
+                        appointment.getAppointment_start().toLocalDate(),
+                        appointment.getAppointment_start().toLocalTime());
+                return appointmentUI;
+            }
+        }
+        return null;
     }
 
     public Appointment addAppointment(AppointmentRequest request) {
@@ -131,8 +148,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     }
 
-    @Override
-    public long updateAppointment(long id, AppointmentUI appointmentUI) {
+     public long updateAppointment(long id, AppointmentUI appointmentUI) {
         Appointment appointmentToUpdate = getAppointmentById(id);
         if (appointmentToUpdate == null) {
             throw new NoSuchElementException("Не найден приём с идентификатором \"" + appointmentUI.getId() + "\"");
@@ -150,7 +166,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.saveAndFlush(appointmentToUpdate);
         return appointmentToUpdate.getId();
     }
-    @Override
+
     public void deleteAppointmentsByDoctorId(long id) {
         List<Appointment> appointments_to_delete =
                 appointmentRepository.findAll().stream()
