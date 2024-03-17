@@ -22,34 +22,54 @@ import java.util.NoSuchElementException;
 @RequestMapping("/category")
 @Tag(name = "Category")
 public class CategoryController {
-    // dependency injection
     private final CategoryService categoryService;
+
     @GetMapping()
     @Operation(summary = "get all categories"
-            ,description = "Поиск всех категорий врачей")
-//       public List<Category> allCategories() {
-//        return categoryService.allCategories();
-    //}
+            , description = "Поиск всех категорий врачей")
+// все категории врачей
     public List<CategoryUI> allCategoriesUI() {
         return categoryService.allCategoriesUI();
     }
+
+    //    поиск категории по id
     @GetMapping("/{id}")
-    @Operation(summary = "get patient by id"
-            ,description = "Поиск пациента по идентификатору")
+    @Operation(summary = "get category by id"
+            , description = "Поиск категории по идентификатору")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Ошибка клиента")
     })
-    public ResponseEntity<String> getCategory(@PathVariable long id) {
-        final String category;
-        category = categoryService.getCategoryById(id);
-        if (category == "") {
+    public ResponseEntity<CategoryUI> getCategory(@PathVariable long id) {
+        CategoryUI categoryUI = categoryService.getCategoryUIById(id);
+        if (categoryUI == null) {
             throw new NoSuchElementException("Категория не найдена");
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body(category);
+            return ResponseEntity.status(HttpStatus.OK).body(categoryUI);
 
         }
     }
 
+    // добавление категории врача
+    @PostMapping
+    @Operation(summary = "add a doctor category to the clinic"
+            , description = "Добавление категории врача в клинику")
+    public long addCategory(@RequestBody CategoryUI category) {
+        return categoryService.addCategory(category);
 
+    }
+
+    // изменение  категории врача
+    @PutMapping("/{id}")
+    public long updateCategory(@PathVariable Long id, @RequestBody CategoryUI category) {
+        return categoryService.updateCategory(id, category);
+    }
+
+    // удаление  категории врача
+    @DeleteMapping("/{id}")
+    @Operation(summary = "delete category by id"
+            , description = "Удаление категории врача по идентификатору")
+    public String deleteCategory(@PathVariable long id) {
+        return categoryService.deleteCategory(id);
+    }
 }

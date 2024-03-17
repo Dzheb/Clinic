@@ -19,14 +19,14 @@ public class SpecialityServiceImpl implements SpecialityService {
     public SpecialityServiceImpl(SpecialityRepository specialityRepository) {
         this.specialityRepository = specialityRepository;
     }
-
+    //    поиск специальности врача в базе
     public String getSpecialityById(long id) {
         Speciality spec = specialityRepository.findById(id).orElse(null);
         if (spec != null) {
             return spec.getSpeciality();
         } else return "";
     }
-
+    // вывод всех специальностей врача на экран
     public List<SpecialityUI> allSpecialityUI() {
         List<SpecialityUI> specialityUIS = new ArrayList<>();
         List<Speciality> specialities = specialityRepository.findAll();
@@ -40,11 +40,38 @@ public class SpecialityServiceImpl implements SpecialityService {
         }
         return specialityUIS;
      }
-
-    public Speciality getSpecialityBySpeciality(String speciality) {
-        return specialityRepository.findAll().stream()
-                .filter(it -> it.getSpeciality()
-                        .equals(speciality)).findFirst().orElse(null);
+    //    поиск специальности врача в базе
+    public SpecialityUI getSpecialityUIById(long id) {
+        Speciality speciality = specialityRepository.findById(id).orElse(null);
+        if (speciality == null) {
+            return null;
+        } else return new SpecialityUI(id, speciality.getSpeciality());
     }
+    // добавление  специальности врача
+    public long addSpeciality(SpecialityUI speciality) {
+        Speciality newSpeciality = new Speciality();
+        newSpeciality.setSpeciality(speciality.getSpeciality());
+        return specialityRepository.saveAndFlush(newSpeciality).getId();
+    }
+    // изменение специальности врача
+    public long updateSpeciality(long id, SpecialityUI speciality) {
+        Speciality specialityToUpdate = specialityRepository.findById(id)
+                .orElse(null);
+        if (specialityToUpdate != null) {
+            specialityToUpdate.setSpeciality(speciality.getSpeciality());
+            return specialityRepository.saveAndFlush(specialityToUpdate).getId();
+        } else return -1;
+    }
+    // удаление категории врача
+    public String deleteSpeciality(long id) {
+        String speciality = getSpecialityById(id);
+        if (!speciality.equals("")) {
+            specialityRepository.deleteById(id);
+            return "Специальность врача id = " + id + " удалена";
+        } else {
+            return "Специальность врача = " + id + " не нрайдена";
+        }
+    }
+
 }
 

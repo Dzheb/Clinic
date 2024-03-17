@@ -41,7 +41,7 @@ public class DoctorServiceImpl implements DoctorService {
         return null;
     }
 
-    public Long addDoctor(DoctorUI doctor) {
+    public long addDoctor(DoctorUI doctor) {
         Doctor newDoctor = new Doctor();
         newDoctor.setFio(doctor.getFio());
         newDoctor.setCategory(doctor.getCategoryId());

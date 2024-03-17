@@ -3,13 +3,9 @@ package ru.dzheb.clinic.service;
 import org.springframework.stereotype.Service;
 import ru.dzheb.clinic.model.Category;
 import ru.dzheb.clinic.model.CategoryUI;
-import ru.dzheb.clinic.model.Patient;
-import ru.dzheb.clinic.model.PatientUI;
 import ru.dzheb.clinic.repository.CategoryRepository;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -20,28 +16,30 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-
-    public String getCategoryById(long id) {
+//    поиск категории врача в базе
+       public String getCategoryById(long id) {
         Category cat = categoryRepository.findById(id).orElse(null);
         if (cat != null) {
             return cat.getCategory();
         } else return "";
     }
 
+
+    //    поиск категории врача в базе
+    public CategoryUI getCategoryUIById(long id) {
+
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (category == null) {
+            return null;
+        } else return new CategoryUI(id, category.getCategory());
+
+    }
+    // вывод всех категорий врача
     public List<Category> allCategories() {
         return categoryRepository.findAll();
     }
 
-
-    public Category getCategoryByCategory(String category) {
-        Category cat = categoryRepository.findAll().stream()
-                .filter(it -> it.getCategory()
-                        .equals(category)).findFirst().orElse(null);
-        return categoryRepository.findAll().stream()
-                .filter(it -> it.getCategory()
-                        .equals(category)).findFirst().orElse(null);
-    }
-
+    // вывод всех категорий врача на экран
     public List<CategoryUI> allCategoriesUI() {
         List<CategoryUI> categoryUIS = new ArrayList<>();
         List<Category> categories = categoryRepository.findAll();
@@ -55,4 +53,33 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryUIS;
     }
+
+    // добавление  категории врача
+    public long addCategory(CategoryUI category) {
+        Category newCategory = new Category();
+        newCategory.setCategory(category.getCategory());
+        return categoryRepository.saveAndFlush(newCategory).getId();
+    }
+
+// изменение категории врача
+    public long updateCategory(long id, CategoryUI category) {
+        Category categoryToUpdate = categoryRepository.findById(id)
+                .orElse(null);
+        if (categoryToUpdate != null) {
+            categoryToUpdate.setCategory(category.getCategory());
+            return categoryRepository.saveAndFlush(categoryToUpdate).getId();
+        } else return -1;
+    }
+
+// удаление категории врача
+    public String deleteCategory(long id) {
+        String category = getCategoryById(id);
+        if (!category.equals("")) {
+            categoryRepository.deleteById(id);
+            return "Категория врача id = " + id + " удалена";
+        } else {
+            return "Категория врача = " + id + " не нрайдена";
+        }
+    }
+
 }

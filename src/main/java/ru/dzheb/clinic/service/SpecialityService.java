@@ -11,5 +11,12 @@ public interface SpecialityService {
 
     List<SpecialityUI> allSpecialityUI();
 
-    Speciality getSpecialityBySpeciality(String speciality);
+    SpecialityUI getSpecialityUIById(long id);
+
+    long addSpeciality(SpecialityUI speciality);
+
+    long updateSpeciality(long id, SpecialityUI speciality);
+
+    String deleteSpeciality(long id);
+
 }

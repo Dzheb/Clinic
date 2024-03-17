@@ -13,7 +13,7 @@ public interface DoctorService {
 
     DoctorUI getDoctorUIById(long id);
 
-    Long addDoctor(DoctorUI doctor);
+    long addDoctor(DoctorUI doctor);
 
     long updateDoctor(long id, DoctorUI doctor);
     List<DoctorUI> allDoctorsUI();
