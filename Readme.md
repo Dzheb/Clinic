@@ -22,7 +22,7 @@ ENTRYPOINT ["java", "-jar", "/clinic-0.0.1-SNAPSHOT.jar"]
    MYSQL_PASSWORD=root
 4. Создать в папке проекта файл docker-compose.yml
 Содержание файла docker-compose.yml
-version: '3.7'
+version: '1.0'
 services:
 app:
 build:
