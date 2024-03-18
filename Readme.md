@@ -1,27 +1,29 @@
-* Запуск проекта в Docker:
-* 
-1.  Создать jar файл проекта командой в терминале -
+### Запуск проекта в Docker:
+
+### 1.  Создать jar файл проекта командой в терминале -
 mvn clean package
-2. Создать  Dockerfile в папке проекта
-* содержание Dockerfile
-* # Use a base image with Java 18
+### 2. Создать  Dockerfile в папке проекта
+### содержание Dockerfile:
+
+### Use a base image with Java 18
 FROM openjdk:18
 
-# Copy the JAR package into the image
+### Copy the JAR package into the image
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} clinic-0.0.1-SNAPSHOT.jar
 
-# Expose the application port
+### Expose the application port
 EXPOSE 9000
 
-# Run the App
+### Run the App
 ENTRYPOINT ["java", "-jar", "/clinic-0.0.1-SNAPSHOT.jar"]
-3. Создать в папке проекта файл .env
-Содержание файла .env
+
+### 3. Создать в папке проекта файл .env
+Содержание файла .env:
    MYSQL_DATABASE=clinic
    MYSQL_PASSWORD=root
-4. Создать в папке проекта файл docker-compose.yml
-Содержание файла docker-compose.yml
+### 4. Создать в папке проекта файл docker-compose.yml
+### Содержание файла docker-compose.yml:
 version: '1.0'
 services:
 app:
@@ -60,5 +62,6 @@ mysql-data:
 networks:
 springboot-mysql-network:
 name: springboot-mysql-network 
-5. docker build .
-6. docker-compose up
+
+### 5. docker build .
+### 6. docker-compose up
