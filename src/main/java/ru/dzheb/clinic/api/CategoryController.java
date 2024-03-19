@@ -28,8 +28,8 @@ public class CategoryController {
     @Operation(summary = "get all categories"
             , description = "Поиск всех категорий врачей")
 // все категории врачей
-    public List<CategoryUI> allCategoriesUI() {
-        return categoryService.allCategoriesUI();
+    public ResponseEntity<List<CategoryUI>> allCategoriesUI() {
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.allCategoriesUI());
     }
 
     //    поиск категории по id
@@ -54,22 +54,29 @@ public class CategoryController {
     @PostMapping
     @Operation(summary = "add a doctor category to the clinic"
             , description = "Добавление категории врача в клинику")
-    public long addCategory(@RequestBody CategoryUI category) {
-        return categoryService.addCategory(category);
-
+    public ResponseEntity<Long>  addCategory(@RequestBody CategoryUI category) {
+        Long catId = categoryService.addCategory(category);
+            return ResponseEntity.status(HttpStatus.OK).body(catId);
     }
 
     // изменение  категории врача
     @PutMapping("/{id}")
-    public long updateCategory(@PathVariable Long id, @RequestBody CategoryUI category) {
-        return categoryService.updateCategory(id, category);
+    public ResponseEntity<Long> updateCategory(@PathVariable Long id, @RequestBody CategoryUI category) {
+        Long catId = categoryService.updateCategory(id, category);
+        if (catId > 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(catId);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(catId);
+        }
+
     }
 
     // удаление  категории врача
     @DeleteMapping("/{id}")
     @Operation(summary = "delete category by id"
             , description = "Удаление категории врача по идентификатору")
-    public String deleteCategory(@PathVariable long id) {
-        return categoryService.deleteCategory(id);
+    public ResponseEntity<String> deleteCategory(@PathVariable long id) {
+        String catId = categoryService.deleteCategory(id);
+        return ResponseEntity.status(HttpStatus.OK).body(catId);
     }
 }

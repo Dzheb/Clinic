@@ -8,11 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.dzheb.clinic.model.DoctorUI;
 import ru.dzheb.clinic.model.Patient;
 import ru.dzheb.clinic.model.PatientUI;
 import ru.dzheb.clinic.service.PatientService;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -27,9 +25,12 @@ public class PatientController {
     @GetMapping()
     @Operation(summary = "get all patients"
             ,description = "Поиск всех пациентов")
-       public List<PatientUI> allPatients() {
-        return patientservice.allPatientsUI();
+    // список всех пациентов
+       public ResponseEntity<List<PatientUI>> allPatients() {
+
+        return ResponseEntity.status(HttpStatus.OK).body(patientservice.allPatientsUI());
     }
+    // поиск пациента по идентификатору
     @GetMapping("/{id}")
     @Operation(summary = "get patient by id"
             ,description = "Поиск пациента по идентификатору")
@@ -43,28 +44,37 @@ public class PatientController {
         if (patient == null) {
             System.out.println("Пациент не найден");
             throw new NoSuchElementException("Пациент не найден");
-//            return ResponseEntity.notFound().build();
         } else {
             System.out.println("Пациент: " + patientservice.getPatientById(id));
             return ResponseEntity.status(HttpStatus.OK).body(patient);
 
         }
     }
+    // добавление пациента
     @PostMapping
     @Operation(summary = "add patient to the clinic"
             ,description = "Добавление пациента в клинику")
-    public Long addPatient(@RequestBody PatientUI patient) {
-        return patientservice.addPatient(patient);
+    public ResponseEntity<Long> addPatient(@RequestBody PatientUI patient) {
+        Long patId = patientservice.addPatient(patient);
+        return ResponseEntity.status(HttpStatus.OK).body(patId);
     }
+    // изменение пациента
     @PutMapping("/{id}")
-    public long updatePatient(@PathVariable Long id, @RequestBody PatientUI patient) {
-        return patientservice.updatePatient(id, patient);
+    public ResponseEntity<Long> updatePatient(@PathVariable Long id, @RequestBody PatientUI patient) {
+        Long patId = patientservice.updatePatient(id, patient);
+        if (patId > 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(patId);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(patId);
+        }
     }
+    // удаление пациента
     @DeleteMapping("/{id}")
     @Operation(summary = "delete patient by id"
             ,description = "Удаление пациента по идентификатору")
-    public String deleteDoctor(@PathVariable long id) {
-        return patientservice.deletePatient(id);
+    public ResponseEntity<String> deleteDoctor(@PathVariable long id) {
+        String patId = patientservice.deletePatient(id);
+        return ResponseEntity.status(HttpStatus.OK).body(patId);
     }
 
 }

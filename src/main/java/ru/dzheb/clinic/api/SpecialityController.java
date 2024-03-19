@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.dzheb.clinic.model.CategoryUI;
 import ru.dzheb.clinic.model.SpecialityUI;
 import ru.dzheb.clinic.service.SpecialityService;
 
@@ -26,8 +27,8 @@ public class SpecialityController {
     @GetMapping()
     @Operation(summary = "get all specialities"
             , description = "Поиск всех специализаций врачей")
-    public List<SpecialityUI> allSpeciality() {
-        return specialityService.allSpecialityUI();
+    public ResponseEntity<List<SpecialityUI>> allSpeciality() {
+        return ResponseEntity.status(HttpStatus.OK).body(specialityService.allSpecialityUI());
     }
 
     //    поиск категории по id
@@ -52,22 +53,28 @@ public class SpecialityController {
     @PostMapping
     @Operation(summary = "add a doctor speciality to the clinic"
             , description = "Добавление специальности врача в клинику")
-    public long addSpeciality(@RequestBody SpecialityUI speciality) {
-        return specialityService.addSpeciality(speciality);
+    public ResponseEntity<Long> addSpeciality(@RequestBody SpecialityUI speciality) {
+        Long specId = specialityService.addSpeciality(speciality);
+        return ResponseEntity.status(HttpStatus.OK).body(specId);
     }
 
     // изменение  специальности врача
     @PutMapping("/{id}")
-    public long updateSpeciality(@PathVariable Long id, @RequestBody SpecialityUI speciality) {
-        return specialityService.updateSpeciality(id, speciality);
+    public ResponseEntity<Long> updateSpeciality(@PathVariable Long id, @RequestBody SpecialityUI speciality) {
+        Long specId = specialityService.updateSpeciality(id, speciality);
+        if (specId > 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(specId);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(specId);
+        }
     }
 
     // удаление  категории врача
     @DeleteMapping("/{id}")
     @Operation(summary = "delete speciality by id"
             , description = "Удаление специальности врача по идентификатору")
-    public String deleteSpeciality(@PathVariable long id) {
-        return specialityService.deleteSpeciality(id);
+    public ResponseEntity<String> deleteSpeciality(@PathVariable long id) {
+        String specId = specialityService.deleteSpeciality(id);
+        return ResponseEntity.status(HttpStatus.OK).body(specId);
     }
 }
-

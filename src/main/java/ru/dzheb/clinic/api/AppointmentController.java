@@ -11,12 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.dzheb.clinic.model.Appointment;
 import ru.dzheb.clinic.model.AppointmentUI;
-import ru.dzheb.clinic.model.DoctorUI;
 import ru.dzheb.clinic.service.AppointmentService;
-
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -27,6 +24,7 @@ import java.util.Optional;
 public class AppointmentController {
     // dependency injection
     private final AppointmentService appointmentService;
+    // список всех приёмов
     @GetMapping()
     @Operation(summary = "all appointment"
             ,description = "Поиск всех приёмов")
@@ -34,8 +32,9 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Ошибка клиента")
     })
-    public List<AppointmentUI> allAppointments() {
-        return appointmentService.allAppointmentsUI();
+    public ResponseEntity<List<AppointmentUI>> allAppointments() {
+
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.allAppointmentsUI());
     }
     @GetMapping("/{id}")
     @Operation(summary = "get appointment by id"
@@ -44,6 +43,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Ошибка клиента")
     })
+    // поиск приёма по идентификатору
     public ResponseEntity<AppointmentUI> getAppointment(@PathVariable long id) {
         final AppointmentUI appointmentUI;
         appointmentUI = appointmentService.getAppointmentUIById(id);
@@ -55,23 +55,31 @@ public class AppointmentController {
 
         }
     }
-
+    // добавление приёма
     @PostMapping
     @Operation(summary = "add appointment"
             ,description = "Добавление приёма")
-    public Appointment addAppointment(@RequestBody AppointmentUI appointmentUI) {
-        return appointmentService.addAppointmentUI(appointmentUI);
-
+    public ResponseEntity<Appointment> addAppointment(@RequestBody AppointmentUI appointmentUI) {
+        Appointment app = appointmentService.addAppointmentUI(appointmentUI);
+        return ResponseEntity.status(HttpStatus.OK).body(app);
     }
+    // изменение приёма
     @PutMapping("/{id}")
-    public long updateAppointment(@PathVariable Long id, @RequestBody AppointmentUI appointmentUI) {
-        return appointmentService.updateAppointment(id, appointmentUI);
-    }
+    public ResponseEntity<Long> updateAppointment(@PathVariable Long id, @RequestBody AppointmentUI appointmentUI) {
+        Long appId = appointmentService.updateAppointment(id, appointmentUI);
+        if (appId > 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(appId);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(appId);
+        }
+     }
+    // удаление приёма
     @DeleteMapping("/{id}")
     @Operation(summary = "delete appointment by id"
             ,description = "Удаление приёма по идентификатору")
-    public String deleteAppointment(@PathVariable long id) {
-        return appointmentService.deleteAppointment(id);
+    public ResponseEntity<String> deleteAppointment(@PathVariable long id) {
+        String appId = appointmentService.deleteAppointment(id);
+        return ResponseEntity.status(HttpStatus.OK).body(appId);
     }
     @DeleteMapping("doctor/{id}")
     @Operation(summary = "delete appointment by doctor id"
