@@ -1,0 +1,27 @@
+<form action="#" th:action="@{/addpatient}" th:object="${patient}" method="post">
+ <!-- private Date Birth; -->
+<!-- 
+private String Policy;
+private String Deseases;
+private String Allergy;
+private String Operations; -->
+  <label for="family">Фамилия</label>
+  <input type="text" th:field="*{family}" id="family" placeholder="Фамилия">
+  <span th:if="${#fields.hasErrors('family')}" th:errors="*{family}"></span>
+  <label for="name">Имя</label>
+  <input type="text" th:field="*{name}" id="name" placeholder="Имя">
+  <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+  <label for="Middle_name">Отчество</label>
+  <input type="text" th:field="*{Middle_name}" id="Middle_name" placeholder="Отчество">
+  <span th:if="${#fields.hasErrors('Middle_name')}" th:errors="*{Middle_name}"></span>
+  <label for="phone">Телефон</label>
+  <input type="text" th:field="*{phone}" id="phone" placeholder="Телефон">
+  <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+  <label for="Policy">Полис</label>
+  <input type="text" th:field="*{Policy}" id="Policy" placeholder="Полис">
+  <span th:if="${#fields.hasErrors('Policy')}" th:errors="*{Policy}"></span>
+  <!-- <label for="birth">Дата рождения</label>
+  <input type="date" th:field="*{birth}" id="birth" placeholder="01/01/1990">
+  <span th:if="${#fields.hasErrors('{birth')}" th:errors="*{{birth}"></span> -->
+  <input type="submit" value="Добавить пациента">   
+</form>

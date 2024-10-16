@@ -27,7 +27,6 @@ public class PatientController {
             ,description = "Поиск всех пациентов")
     // список всех пациентов
        public ResponseEntity<List<PatientUI>> allPatients() {
-
         return ResponseEntity.status(HttpStatus.OK).body(patientservice.allPatientsUI());
     }
     // поиск пациента по идентификатору

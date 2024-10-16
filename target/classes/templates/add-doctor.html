@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add doctor</title>
+   <link th:href="@{/css/add_doctor.css}" rel="stylesheet" />
+</head>
+<body>  
+  <form  class="add_form"action="#" th:action="@{/adddoctor}" th:object="${doctor}" method="post">
+    <div class="add_form_items">
+      <p>Добавление нового врача</p>
+    <label for="fio">Ф.И.О.</label>
+    <input type="text" th:field="*{fio}" id="fio" placeholder="Ф.И.О.">
+    <span th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}"></span>
+    <label for="speciality">Специализация</label>
+    <input type="text" th:field="*{speciality}" id="speciality" placeholder="Специальность">
+    <span th:if="${#fields.hasErrors('speciality')}" th:errors="*{speciality}"></span>
+    <label for="category">Категория</label>
+    <input type="text" th:field="*{category}" id="category" placeholder="Категория">
+    <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+    <!-- <label for="birth">Дата рождения</label>
+    <input type="date" th:field="*{birth}" id="birth" placeholder="01/01/1990">
+    <span th:if="${#fields.hasErrors('{birth')}" th:errors="*{{birth}"></span> -->
+    <input type="submit" value="Добавить врача">
+    </div>
+    </div>
+  </form>
+</body>
+</html>
+

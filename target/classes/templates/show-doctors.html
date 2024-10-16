@@ -1,0 +1,30 @@
+<div th:switch="${doctors}">
+  <h4 th:case="null">Нет записей!</h4>
+    <div th:case="*">
+        <h6>Врачи</h6>
+        <table class="user_table">
+            <thead>
+              <tr>
+                <th>Ф.И.О.</th>
+                <th>Специализация</th>
+                <th>Категория</th>
+                <th>Дата рождения</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="doctor : ${doctors}">
+                <td th:text="${doctor.fio}"></td>
+                <td th:text="${doctor.speciality}"></td>
+                <td th:text="${doctor.category}"></td>
+                <td th:text="${doctor.birth}"></td>
+                <td><a th:href="@{/edit/{id}(id=${doctor.id})}"><img class="icon" src="/icons/SVG/pencil.svg"/>
+                </a></td>
+                <td><a th:href="@{/delete/{id}(id=${doctor.id})}"><img class="icon" src="/icons/SVG/delete.svg"/>         
+                </a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div> 
+        </div> 

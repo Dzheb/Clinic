@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+  <form action="#"
+  th:action="@{/update/{id}(id=${doctor.id})}"
+  th:object="${doctor}"
+  method="post">
+  <label for="fio">Ф.И.О.</label>
+  <input type="text" th:field="*{fio}" id="fio" placeholder="Ф.И.О.">
+  <span th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}"></span>
+  <label for="speciality">Специализация</label>
+  <input type="text" th:field="*{speciality}" id="speciality" placeholder="Специальность">
+  <span th:if="${#fields.hasErrors('speciality')}" th:errors="*{speciality}"></span>
+  <label for="category">Категория</label>
+  <input type="text" th:field="*{category}" id="category" placeholder="Категория">
+  <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+  <label for="birth">Дата рождения</label>
+  <!-- <input type="text" th:field="*{birth}" id="birth" placeholder="01/01/1990">
+  <span th:if="${#fields.hasErrors('{birth')}" th:errors="*{{birth}"></span> -->
+  <input type="date" name="birth" id="birth" placeholder="01/01/1990">
+  
+  <input type="submit" value="Обновить данные">   
+  
+</form>
+</body>
+</html>
