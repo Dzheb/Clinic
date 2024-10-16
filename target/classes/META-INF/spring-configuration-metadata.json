@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "application.doctor",
+      "type": "ru.dzheb.clinic.DoctorProperties",
+      "sourceType": "ru.dzheb.clinic.DoctorProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "application.doctor.max-allowed-appointments",
+      "type": "java.lang.Integer",
+      "sourceType": "ru.dzheb.clinic.DoctorProperties"
+    },
+    {
+      "name": "application.doctor.min-appointment-interval",
+      "type": "java.lang.Integer",
+      "sourceType": "ru.dzheb.clinic.DoctorProperties"
+    },
+    {
+      "name": "application.doctor.tags",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "sourceType": "ru.dzheb.clinic.DoctorProperties"
+    }
+  ],
+  "hints": []
+}

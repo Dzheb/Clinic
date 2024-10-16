@@ -1,0 +1,10 @@
+.add_form_items{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 50%;}
+  .add_form {
+  display: flex;
+   gap: 16px;
+  align-items: center;
+  }
