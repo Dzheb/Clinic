@@ -17,7 +17,8 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://192.168.0.107:8080",
+        "http://localhost:8080","https://localhost","https://192.168.0.107"})
 @RequiredArgsConstructor
 @RequestMapping("/appointment")
 @Tag(name = "Appointment")

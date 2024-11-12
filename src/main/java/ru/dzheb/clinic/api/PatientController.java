@@ -16,7 +16,8 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://192.168.0.107:8080",
+        "http://localhost:8080","https://localhost","https://192.168.0.107"})
 @RequestMapping("/patient")
 @Tag(name = "Patient")
 public class PatientController {

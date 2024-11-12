@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.dzheb.clinic.model.CategoryUI;
 import ru.dzheb.clinic.model.SpecialityUI;
 import ru.dzheb.clinic.service.SpecialityService;
 
@@ -17,7 +16,8 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://192.168.0.107:8080",
+        "http://localhost:8080","https://localhost"})
 @RequestMapping("/speciality")
 @Tag(name = "Speciality")
 public class SpecialityController {

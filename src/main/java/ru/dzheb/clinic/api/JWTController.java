@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://192.168.0.107:8080",
+        "http://localhost:8080","https://localhost","https://192.168.0.107"})
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 
